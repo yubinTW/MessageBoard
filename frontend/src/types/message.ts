@@ -2,7 +2,7 @@ export type Message = {
   messageId: string
   content: string
   author: string
-  createdAt: Date
+  createdAt: string
 }
 
 export type MessageBody = Omit<Message, 'messageId' | 'createdAt'>

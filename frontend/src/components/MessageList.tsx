@@ -7,7 +7,7 @@ interface MessageListProps {
   messages: Message[]
 }
 
-const dateStringFormat = (date: Date) => dayjs(date).format('YYYY-MM-DD HH:mm:ss')
+const dateStringFormat = (dateString: string) => dayjs(dateString).format('YYYY-MM-DD HH:mm:ss')
 
 const MessageList: React.FC<MessageListProps> = ({ messages }) => {
   return (
