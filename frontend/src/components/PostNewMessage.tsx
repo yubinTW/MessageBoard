@@ -1,31 +1,30 @@
 import React, { useState } from 'react'
-import { Modal, Button, Input, Form, message as notifyMessage } from 'antd'
+import { Modal, Button, Input, Form, message as notifyMessage, FormProps } from 'antd'
 import { addMessage } from '../services/message'
-
-const isInvalidMessage = (author: string, content: string) => {
-  return author.trim() === '' || content.trim() === ''
-}
+import { MessageBody } from '../types/message'
 
 interface PostNewMessageProps {
   onMessagePosted: () => void
 }
 
+type FieldType = {
+  author: string
+  content: string
+}
+
 const PostNewMessage: React.FC<PostNewMessageProps> = ({ onMessagePosted }) => {
-  const [author, setAuthor] = useState('')
-  const [content, setContent] = useState('')
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [notifyMessageApi, contextHolder] = notifyMessage.useMessage()
+  const [form] = Form.useForm<FieldType>()
 
-  const handleSubmit = () => {
-    if (isInvalidMessage(author, content)) {
-      notifyMessageApi.error('Author and message cannot be empty!')
-      return
+  const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
+    const messageBody: MessageBody = {
+      author: values.author,
+      content: values.content
     }
-    addMessage({ author, content })
+    addMessage(messageBody)
       .then(() => {
-        console.log('Message posted')
-        setAuthor('')
-        setContent('')
+        form.resetFields()
         setIsModalVisible(false)
         notifyMessageApi.success('Message posted!')
         onMessagePosted()
@@ -50,19 +49,19 @@ const PostNewMessage: React.FC<PostNewMessageProps> = ({ onMessagePosted }) => {
       <Button type="primary" onClick={showModal}>
         Post New Message
       </Button>
-      <Modal
-        title="Post New Message"
-        open={isModalVisible}
-        onOk={handleSubmit}
-        onCancel={handleCancel}
-        okButtonProps={{ disabled: isInvalidMessage(author, content) }}
-      >
-        <Form>
+      <Modal title="Post New Message" open={isModalVisible} footer={<></>}>
+        <Form form={form} initialValues={{ author: '', content: '' }} autoComplete={'off'} onFinish={onFinish}>
           <Form.Item label="Author" name="author" labelCol={{ span: 4 }}>
-            <Input type="text" value={author} onChange={(e) => setAuthor(e.target.value)} autoComplete={'off'} />
+            <Input required />
           </Form.Item>
           <Form.Item label="Content" name="content" labelCol={{ span: 4 }}>
-            <Input.TextArea rows={5} value={content} onChange={(e) => setContent(e.target.value)} />
+            <Input.TextArea rows={5} required />
+          </Form.Item>
+          <Form.Item style={{ textAlign: 'right' }}>
+            <Button onClick={handleCancel}>Cancel</Button>
+            <Button type="primary" htmlType="submit">
+              Post
+            </Button>
           </Form.Item>
         </Form>
       </Modal>
