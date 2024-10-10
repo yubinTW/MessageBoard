@@ -11,7 +11,9 @@
 		"vscode": {
 			"extensions": [
 				"streetsidesoftware.code-spell-checker",
-				"esbenp.prettier-vscode"
+				"esbenp.prettier-vscode",
+				"mongodb.mongodb-vscode",
+				"humao.rest-client"
 			]
 		}
 	}

@@ -1,3 +1,5 @@
 {
-  "cSpell.words": ["fastify", "Sider"]
+  "cSpell.words": ["fastify", "Sider"],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true
 }
