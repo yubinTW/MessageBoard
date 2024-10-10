@@ -58,3 +58,9 @@ visit port `5173`
 ```bash
 npm run build
 ```
+
+## Deploy project with docker-compose
+
+```bash
+docker compose up -d
+```
