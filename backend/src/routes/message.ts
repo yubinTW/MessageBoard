@@ -9,6 +9,7 @@ export const MessageRouter = (server: FastifyInstance, opts: RouteShorthandOptio
       const messages = await getAllMessages()
       return reply.status(200).send({ messages })
     } catch (error) {
+      server.log.error(`Failed to get messages: ${error}`)
       return reply.status(500).send({ error })
     }
   })
@@ -18,7 +19,7 @@ export const MessageRouter = (server: FastifyInstance, opts: RouteShorthandOptio
       const message = await addMessage(messageBody)
       return reply.status(201).send({ message })
     } catch (error) {
-      server.log.error(error)
+      server.log.error(`Failed to add message: ${error}`)
       return reply.status(500).send({ error })
     }
   })
