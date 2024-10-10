@@ -1,4 +1,6 @@
+import fastifyStatic from '@fastify/static'
 import fastify, { FastifyInstance } from 'fastify'
+import path from 'path'
 
 import { connectToDb } from './plugins/mongoose'
 import { MessageRouter } from './routes/message'
@@ -9,6 +11,10 @@ export const serverOf = () => {
   server.get('/ping', async () => {
     return { message: 'pong!' }
   })
+  server.register(fastifyStatic, {
+    root: path.resolve(__dirname, '../../frontend/dist'),
+    prefix: '/'
+  })
   server.register(MessageRouter)
   return server
 }
@@ -17,7 +23,7 @@ export const serverStart = async (appConfig: AppConfig, server: FastifyInstance)
   try {
     await connectToDb(appConfig.mongodbConnectionString)
   } catch (error) {
-    console.error(`Failed to connect to MongoDB: ${error}`)
+    server.log.error(`Failed to connect to MongoDB: ${error}`)
     process.exit(1)
   }
 
@@ -29,7 +35,7 @@ export const serverStart = async (appConfig: AppConfig, server: FastifyInstance)
   try {
     await server.listen(listenConfig)
   } catch (error) {
-    console.error(`Failed to start server: ${error}`)
+    server.log.error(`Failed to start server: ${error}`)
     process.exit(1)
   }
 }
