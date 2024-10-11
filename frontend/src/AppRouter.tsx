@@ -1,8 +1,8 @@
-import React from "react";
-import { HashRouter, Route, Routes } from "react-router-dom";
-import Board from "./routers/Board";
-import AboutMe from "./routers/AboutMe";
-import AppLayout from "./AppLayout";
+import React from 'react'
+import { HashRouter, Route, Routes } from 'react-router-dom'
+import Board from './routers/Board'
+import AboutMe from './routers/AboutMe'
+import AppLayout from './AppLayout'
 
 const AppRouter: React.FC = () => {
   return (
@@ -14,7 +14,7 @@ const AppRouter: React.FC = () => {
         </Routes>
       </AppLayout>
     </HashRouter>
-  );
-};
+  )
+}
 
-export default AppRouter;
+export default AppRouter
